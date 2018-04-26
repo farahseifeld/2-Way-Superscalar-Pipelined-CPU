@@ -10,7 +10,7 @@ public:
 	~buffer_1();
 	unsigned int PC_in,PC_out;
 	void inputData(unsigned int);
-	void updateData(unsigned int);
+	void updateData();
 private:
 
 };
@@ -28,9 +28,8 @@ void buffer_1::inputData(unsigned int PC)
 {
 	PC_in = PC;
 }
-void buffer_1::updateData(unsigned int stallD)
+void buffer_1::updateData()
 {
-	if(stallD==0)
 	PC_out = PC_in;
 }
 #endif

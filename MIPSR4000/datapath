@@ -110,6 +110,14 @@ void datapath()
 		if (buf7.RegWriteW == 1)
 			rf.writeRegFile(buf7.RegWriteW, ResultW);
 		
+		//Buffers update
+		buf1.updateData();
+		buf2.updateData();
+		buf3.updateData();
+		buf4.updateData();
+		buf5.updateData();
+		buf6.updateData();
+		buf7.updateData();
 		
 	}
 

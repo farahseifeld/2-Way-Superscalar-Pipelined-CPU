@@ -1,0 +1,5 @@
+void PC(int pcin, int & pcout, bool en)
+{
+	if (en)
+		pcout = pcin;
+}

@@ -15,6 +15,11 @@ public:
 	void inputData(unsigned int RegWriteM3, unsigned int ReadDataM3, unsigned int MemtoRegM3
 		, unsigned int ALUOutM3, unsigned int WriteRegM3);
 	void updateData();
+	int inst_num;
+	void setInst(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };

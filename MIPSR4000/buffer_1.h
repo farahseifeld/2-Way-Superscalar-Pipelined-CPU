@@ -8,9 +8,14 @@ class buffer_1
 public:
 	buffer_1();
 	~buffer_1();
-	unsigned int PC_in,PC_out;
+	unsigned int PC_in, PC_out;
 	void inputData(unsigned int);
 	void updateData();
+	int inst_num;
+	void setInst(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };

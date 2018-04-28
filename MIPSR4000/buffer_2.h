@@ -7,7 +7,7 @@ public:
 	~buffer_2();
 	void inputData(unsigned int,unsigned int);
 	void updateData(unsigned int stallD);
-	void CLR();
+	void clr();
 	unsigned int inst, instD,PCPlus4,PCPlus4D;
 private:
 
@@ -35,7 +35,7 @@ void buffer_2::updateData(unsigned int stallD)
 		PCPlus4D = PCPlus4;
 	}
 }
-void buffer_2::CLR()
+void buffer_2::clr()
 {
 	instD = 0;
 	PCPlus4D = 0;

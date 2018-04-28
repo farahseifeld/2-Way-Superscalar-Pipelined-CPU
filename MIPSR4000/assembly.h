@@ -140,7 +140,7 @@ private:
 			cout << "UNKNOWN INSTRUCTION: SYNTAX ERROR" << endl;
 			return false;
 		}
-cout << "opcode:" << opcode << endl << "rs: " << rs << endl << "rt: " << rt << endl << "rd: " << rd << endl << "imm: " << imm << endl;
+//cout << "opcode:" << opcode << endl << "rs: " << rs << endl << "rt: " << rt << endl << "rd: " << rd << endl << "imm: " << imm << endl;
 		opcode = (unsigned)opcode << 26;
 		rs = rs << 21;
 		rt = rt << 16;
@@ -357,14 +357,14 @@ bool check()
 		string s;
 		if (inp.is_open()) {
 
-			getline(inp, s);
+			
 			while (!inp.eof()) {
-				
+				getline(inp, s);
 				//removeSpaces(s);
 				cout << s << endl;
 				instructions.push_back(s);
 				
-				getline(inp, s);
+				//getline(inp, s);
 			}
 		}
 		

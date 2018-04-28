@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ASSEMBLY_H
 #define ASSEMBLY_H
 #include <string>
@@ -410,5 +409,4 @@ public:
 
 
 };
-
 #endif

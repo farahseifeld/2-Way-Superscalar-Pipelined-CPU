@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BUFFER_3_H
 #define BUFFER_3_H
 class buffer_3
@@ -15,6 +16,11 @@ public:
 		, unsigned int RdD, unsigned int SignImmD);
 	void updateData();
 	void flushE();
+	int inst_num = 0;
+	void setInstNum(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };

@@ -11,8 +11,8 @@ public:
 	unsigned int PC_in, PC_out;
 	void inputData(unsigned int);
 	void updateData();
-	int inst_num;
-	void setInst(int num)
+	int inst_num = 0;
+	void setInstNum(int num)
 	{
 		inst_num = num;
 	}

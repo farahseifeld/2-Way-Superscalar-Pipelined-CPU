@@ -54,4 +54,3 @@ void buffer_7::updateData()
 	ReadDataW = ReadDataM3;
 }
 #endif
-

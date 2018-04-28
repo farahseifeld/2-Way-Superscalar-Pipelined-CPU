@@ -1,3 +1,4 @@
+#pragma once
 class instCU
 {
 public:
@@ -5,10 +6,11 @@ public:
 	instCU(int x);
 	int inst;
 	int Iimm, Jimm, A1, A2, RsD, RtD, RdE;
-	int op,funct,jump, branch, MemtoReg, MemWrite, RegWrite,aluctrl,alusrc,RegDst;
+	int op, funct, jump, branch, MemtoReg, MemWrite, RegWrite, aluctrl, alusrc, RegDst;
 	void setinst(int x);
+	void printCU();
 private:
-	void instdec(int inst);
+	void instdec(unsigned int inst);
 	void control();
 };
 instCU::instCU()
@@ -24,14 +26,16 @@ instCU::instCU(int x)
 	control();
 
 }
-void instCU::instdec(int inst)
+void instCU::instdec(unsigned int inst)
 {
 	op = inst >> 26;
+	
 	funct = inst & 0x3f;
 	Iimm = inst & 0xffff;
 	Jimm = (inst << 6) >> 5;
 	A1 = (inst << 6) >> 27;
 	RsD = A1;
+
 	A2 = (inst << 11) >> 27;
 	RtD = A2;
 	RdE = (inst << 16) >> 27;
@@ -138,6 +142,16 @@ void instCU::control()
 		jump = 0;
 		branch = 0;
 	}
+	else {
+		RegWrite = 0;
+		MemtoReg = 0;
+		MemWrite = 0;
+		aluctrl = 0;
+		alusrc = 0;
+		RegDst = 0;
+		jump = 0;
+		branch = 0;
+	}
 
 }
 void instCU::setinst(int x)
@@ -145,4 +159,19 @@ void instCU::setinst(int x)
 	inst = x;
 	instdec(inst);
 	control();
+	//printCU();
+}
+
+void instCU::printCU() {
+	//int Iimm, Jimm, A1, A2, RsD, RtD, RdE;
+	//int op, funct, jump, branch, MemtoReg, MemWrite, RegWrite, aluctrl, alusrc, RegDst;
+	cout << "Iimm: " << Iimm <<endl;
+	cout << "Jimm: " << Jimm << endl;
+	cout << "A1: " << A1 << endl;
+	cout << "A2: " << A2 << endl;
+	cout << "RsD: " << RsD << endl;
+	cout << "RtD: " << RtD << endl;
+	cout << "RdE: " << RdE << endl;
+	cout << "Op: " << op << endl;
+	cout << "jump: " << jump << endl;
 }

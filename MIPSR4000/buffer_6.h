@@ -1,3 +1,4 @@
+#pragma once
 /*
 This buffer is between the two stages of dmemory DF2 AND TC
 */
@@ -8,13 +9,18 @@ class buffer_6
 public:
 	buffer_6();
 	~buffer_6();
-	unsigned int ReadDataM2,RegWriteM2, MemtoRegM2;
-	unsigned int ReadDataM3,RegWriteM3, MemtoRegM3;
+	unsigned int ReadDataM2, RegWriteM2, MemtoRegM2;
+	unsigned int ReadDataM3, RegWriteM3, MemtoRegM3;
 	unsigned int ALUOutM2, WriteRegM2;
 	unsigned int ALUOutM3, WriteRegM3;
-	void inputData(unsigned int RegWriteM2,unsigned int ReadDataM2, unsigned int MemtoRegM2
+	void inputData(unsigned int RegWriteM2, unsigned int ReadDataM2, unsigned int MemtoRegM2
 		, unsigned int ALUOutM2, unsigned int WriteRegM2);
 	void updateData();
+	int inst_num = 0;
+	void setInstNum(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };
@@ -49,4 +55,3 @@ void buffer_6::updateData()
 	ReadDataM3 = ReadDataM2;
 }
 #endif
-

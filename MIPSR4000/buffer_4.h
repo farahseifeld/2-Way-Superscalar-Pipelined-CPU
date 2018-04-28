@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BUFFER_4_H
 #define BUFFER_4_H
 class buffer_4
@@ -10,8 +11,13 @@ public:
 	unsigned int ALUOutE, WriteDataE, WriteRegE;
 	unsigned int ALUOutM, WriteDataM, WriteRegM;
 	void inputData(unsigned int RegWriteE, unsigned int MemtoRegE, unsigned int MemWriteE
-				  ,unsigned int ALUOutE, unsigned int WriteDataE, unsigned int WriteRegE);
+		, unsigned int ALUOutE, unsigned int WriteDataE, unsigned int WriteRegE);
 	void updateData();
+	int inst_num = 0;
+	void setInstNum(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };

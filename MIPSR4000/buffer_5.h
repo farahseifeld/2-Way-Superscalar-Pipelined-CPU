@@ -1,3 +1,4 @@
+#pragma once
 /*
 This buffer is between the two stages of dmemory DF1 AND DF2
 */
@@ -15,6 +16,11 @@ public:
 	void inputData(unsigned int RegWriteM, unsigned int MemtoRegM, unsigned int MemWriteM
 		, unsigned int ALUOutM, unsigned int WriteDataM, unsigned int WriteRegM);
 	void updateData();
+	int inst_num = 0;
+	void setInstNum(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };
@@ -22,7 +28,7 @@ private:
 buffer_5::buffer_5()
 {
 	RegWriteM2 = 0;
-	MemtoRegM2= 0;
+	MemtoRegM2 = 0;
 	MemWriteM2 = 0;
 	ALUOutM2 = 0;
 	WriteDataM2 = 0;

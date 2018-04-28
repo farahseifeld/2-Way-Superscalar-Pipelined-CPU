@@ -1,1 +1,22 @@
-﻿
+﻿  maindp.cpp
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(30): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(39): warning C4101: 'tagaddress': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(39): warning C4101: 'offset': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(39): warning C4101: 'temp': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(49): warning C4101: 'tagaddress': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(49): warning C4101: 'offset': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\cache.h(49): warning C4101: 'temp': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(168): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(175): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(202): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(229): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(266): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(316): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\maindp.cpp(162): warning C4018: '<': signed/unsigned mismatch
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\maindp.cpp(143): warning C4101: 'rst': unreferenced local variable
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\maindp.cpp(75): warning C4715: 'branchPredict': not all control paths return a value
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\maindp.cpp(111): warning C4715: 'pc': not all control paths return a value
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(341): warning C4715: 'assembly::check': not all control paths return a value
+c:\users\osos\documents\visual studio 2015\projects\mipsr4000\mipsr4000\assembly.h(181): warning C4715: 'assembly::allspace': not all control paths return a value
+  MIPSR4000.vcxproj -> C:\Users\osos\Documents\Visual Studio 2015\Projects\MIPSR4000\Debug\MIPSR4000.exe
+  MIPSR4000.vcxproj -> C:\Users\osos\Documents\Visual Studio 2015\Projects\MIPSR4000\Debug\MIPSR4000.pdb (Partial PDB)

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef DMEM_H
 #define DMEM_H
 #include "cache.h"

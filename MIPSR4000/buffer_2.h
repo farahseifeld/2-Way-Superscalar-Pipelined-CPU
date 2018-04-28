@@ -5,10 +5,15 @@ class buffer_2
 public:
 	buffer_2();
 	~buffer_2();
-	void inputData(unsigned int,unsigned int);
+	void inputData(unsigned int, unsigned int);
 	void updateData(unsigned int stallD);
-	void clr();
-	unsigned int inst, instD,PCPlus4,PCPlus4D;
+	void CLR();
+	unsigned int inst, instD, PCPlus4, PCPlus4D;
+	int inst_num = 0;
+	void setInstNum(int num)
+	{
+		inst_num = num;
+	}
 private:
 
 };
@@ -35,7 +40,7 @@ void buffer_2::updateData(unsigned int stallD)
 		PCPlus4D = PCPlus4;
 	}
 }
-void buffer_2::clr()
+void buffer_2::CLR()
 {
 	instD = 0;
 	PCPlus4D = 0;

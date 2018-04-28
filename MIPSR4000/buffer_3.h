@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BUFFER_3_H
 #define BUFFER_3_H
 class buffer_3

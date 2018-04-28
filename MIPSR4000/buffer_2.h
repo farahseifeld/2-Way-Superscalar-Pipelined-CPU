@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BUFFER_2_H
 #define BUFFER_2_H
 class buffer_2
@@ -5,10 +6,10 @@ class buffer_2
 public:
 	buffer_2();
 	~buffer_2();
-	void inputData(unsigned int,unsigned int);
+	void inputData(unsigned int, unsigned int);
 	void updateData(unsigned int stallD);
 	void CLR();
-	unsigned int inst, instD,PCPlus4,PCPlus4D;
+	unsigned int inst, instD, PCPlus4, PCPlus4D;
 private:
 
 };

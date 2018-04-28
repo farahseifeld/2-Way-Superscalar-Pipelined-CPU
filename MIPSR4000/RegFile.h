@@ -1,14 +1,16 @@
 #pragma once
+#pragma once
 #ifndef RegFile_H
 #define RegFile_H
-
+#include <iostream>
 using namespace std;
 class RegFile {
 
 public:
 	int file[16];
 	RegFile() {
-		file[0] = 0;
+		for (int i = 0; i<16; i++)
+			file[i] = 0;
 	}
 	RegFile(int f[16]) {
 		for (int i = 0; i < 16; i++)
@@ -26,6 +28,11 @@ public:
 
 	void jalRegFile(int pc) {
 		file[15] = pc;
+	}
+
+	void print() {
+		for (int i = 0; i < 16; i++)
+			cout << i << "	" << file[i] << endl;
 	}
 
 };

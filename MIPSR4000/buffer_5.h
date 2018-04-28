@@ -1,3 +1,4 @@
+#pragma once
 /*
 This buffer is between the two stages of dmemory DF1 AND DF2
 */
@@ -22,7 +23,7 @@ private:
 buffer_5::buffer_5()
 {
 	RegWriteM2 = 0;
-	MemtoRegM2= 0;
+	MemtoRegM2 = 0;
 	MemWriteM2 = 0;
 	ALUOutM2 = 0;
 	WriteDataM2 = 0;

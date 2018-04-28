@@ -1,3 +1,4 @@
+#pragma once
 #ifndef IMEM_H
 #define IMEM_H
 #include "cache.h"
@@ -7,8 +8,8 @@ public:
 	imem();
 	~imem();
 	void IF1();
-	void IF2(unsigned int address,unsigned int& instruction);
-	void WriteInst(unsigned int address,unsigned int data);
+	void IF2(unsigned int address, unsigned int& instruction);
+	void WriteInst(unsigned int address, unsigned int data);
 private:
 	cache instcache;
 };

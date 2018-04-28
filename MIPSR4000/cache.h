@@ -1,11 +1,14 @@
+#pragma once
 #ifndef CACHE_H
 #define CACHE_H
+#include <iostream>
+using namespace std;
 class cache
 {
 public:
 	cache();
 	~cache();
-	void read(unsigned int address, unsigned int& tag, unsigned int& data,int& valid);
+	void read(unsigned int address, unsigned int& tag, unsigned int& data, int& valid);
 	void write(unsigned int address, unsigned int data);
 private:
 	struct cacheCell
@@ -14,8 +17,8 @@ private:
 		unsigned int tag = 0;
 		unsigned int data;
 	};
-	int size=1000;
-	unsigned int tagBits, indexBits, offsetBits=5;
+	int size = 1000;
+	unsigned int tagBits, indexBits, offsetBits = 5;
 	cacheCell* cacheArr;
 };
 #endif
@@ -38,6 +41,8 @@ void cache::read(unsigned int address, unsigned int& tag, unsigned int& data, in
 	address = address >> offsetBits;
 	temp = pow(2, indexBits) - 1;
 	index = address & temp;
+	cout << "index = " << index << endl;
+	cout << "address:" << address << endl;
 	tag = cacheArr[index].tag;
 	data = cacheArr[index].data;
 	valid = cacheArr[index].valid;

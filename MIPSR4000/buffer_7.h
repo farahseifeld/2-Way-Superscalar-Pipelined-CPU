@@ -1,3 +1,4 @@
+#pragma once
 /*
 This is the  buffer between the TC stage and the write back stage
 */
@@ -49,4 +50,3 @@ void buffer_7::updateData()
 	ReadDataW = ReadDataM3;
 }
 #endif
-

@@ -1,3 +1,4 @@
+#pragma once
 /*
 This buffer is between the 2 Instruction fetch stages IF & ID
 */
@@ -8,7 +9,7 @@ class buffer_1
 public:
 	buffer_1();
 	~buffer_1();
-	unsigned int PC_in,PC_out;
+	unsigned int PC_in, PC_out;
 	void inputData(unsigned int);
 	void updateData();
 private:

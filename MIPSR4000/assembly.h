@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ASSEMBLY_H
 #define ASSEMBLY_H
 #include <string>
@@ -23,11 +24,11 @@ private:
 			type = 'I';
 		}
 		else if (s == "LW") {
-			opcode = 35;
+			opcode = 0x23;
 			type = 'I';
 		}
 		else if (s == "SW") {
-			opcode = 43;
+			opcode = 0x2b;
 			type = 'I';
 		}
 		else if (s == "JAL") {
@@ -66,8 +67,8 @@ private:
 	bool split(string s, string &name, int &rs, int &rt, int &rd, int &imm) {
 
 		int i = s.find(" ");
-		if (i == string::npos)
-			return false;
+	/*	if (i == string::npos)*/
+			/*return false;*/
 
 		int j = s.find(",");
 		int j1 = s.find(",", j + 1);
@@ -75,21 +76,21 @@ private:
 
 		if (j != string::npos) {
 			rd = atoi((s.substr(i + 1, j)).c_str());
-			if (rd > 15 || rd<0)
-				return false;
+		/*	if (rd > 15 || rd<0)*/
+			/*	return false;*/
 		}
 
 		else if (name != "JR") {
 			imm = atoi((s.substr(i + 1)).c_str());
-			return true;
+		/*	return true;*/
 		}
 		else {
 			rs = atoi((s.substr(i + 1)).c_str());
-			if (rs > 15 || rs<0)
-				return false;
+			/*if (rs > 15 || rs<0)
+				return false;*/
 			rd = 0;
 			rt = 0;
-			return true;
+		/*	return true;*/
 		}
 
 		if (j1 != string::npos) {
@@ -97,10 +98,10 @@ private:
 			rs = atoi((s.substr(j + 1, j1)).c_str());
 			rt = atoi((s.substr(j1 + 1)).c_str());
 			imm = rt;
-			if (rs > 15 || rs < 0)
-				return false;
-			if (rt > 15 || rt < 0)
-				return false;
+			/*if (rs > 15 || rs < 0)
+				return false;*/
+		/*	if (rt > 15 || rt < 0)
+				return false;*/
 		}
 
 		else {
@@ -115,10 +116,10 @@ private:
 			imm = atoi((s.substr(j + 1, k)).c_str());
 			rs = atoi((s.substr(k + 1, k1)).c_str());
 
-			if (rt > 15 || rt < 0)
-				return false;
-			if (rs > 15 || rs < 0)
-				return false;
+			//if (rt > 15 || rt < 0)
+			////	return false;
+			//if (rs > 15 || rs < 0)
+				//return false;
 		}
 		return true;
 	}
@@ -139,8 +140,8 @@ private:
 			cout << "UNKNOWN INSTRUCTION: SYNTAX ERROR" << endl;
 			return false;
 		}
-cout << "opcode:" << opcode << endl << "rs: " << rs << endl << "rt: " << rt << endl << "rd: " << rd << endl << "imm: " << imm << endl;
-		opcode = (unsigned)opcode << 26;
+cout << "opcode:" << hex<<opcode << endl << "rs: " << rs << endl << "rt: " << rt << endl << "rd: " << rd << endl << "imm: " << imm << endl;
+		opcode = opcode << 26;
 		rs = rs << 21;
 		rt = rt << 16;
 		rd = rd << 11;
@@ -149,6 +150,7 @@ cout << "opcode:" << opcode << endl << "rs: " << rs << endl << "rt: " << rt << e
 			inst = opcode | rs | rt | rd | funct;
 		else if (type == 'I') {
 			rt = rd << 5;
+			
 			inst = opcode | rs | rt | imm;
 		}
 		else if (type == 'J') {
@@ -356,14 +358,14 @@ bool check()
 		string s;
 		if (inp.is_open()) {
 
-			getline(inp, s);
+			
 			while (!inp.eof()) {
-				
+				getline(inp, s);
 				//removeSpaces(s);
 				cout << s << endl;
 				instructions.push_back(s);
 				
-				getline(inp, s);
+				//getline(inp, s);
 			}
 		}
 		
@@ -409,4 +411,5 @@ public:
 
 
 };
+
 #endif

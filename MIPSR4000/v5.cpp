@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include"instCU.h"
 #include"buffer_1.h"
@@ -16,7 +17,7 @@
 #include "HazardUnit.h"
 //#include "gui.h"
 using namespace std;
-
+ofstream target;
 void datapath(assembly f);
 void ALU(int a, int b, int ALU_CT, int &result, int &z);
 void PC(unsigned int pcin, unsigned int &pcout, bool en);
@@ -61,7 +62,7 @@ void dp(int &clk, unsigned int &pcin,
 	buffer_1 &buf1, buffer_2 &buf2, buffer_3 &buf3, buffer_4 &buf4, buffer_5 &buf5,
 	buffer_6 &buf6, buffer_7 &buf7, int &rd1, int &rd2, int &ResultW, int&WriteDataE, int &ReadDataM2, int &SrcAE,
 	int &SrcBE, int &aluoutE, int &z, int & c1, int &c2, unsigned int &comp, int &WriteRegE, vector <Code> &code, assembly a, unsigned int &bpc) {
-	cout << "Cycle " << clk << endl;
+	target << "Cycle " << clk << endl;
 	HazardUnit h;
 	h.inputData(cu.RsD, buf3.RsE, cu.RtD, buf3.RtE, buf3.MemtoRegE, cu.branch, buf3.RegWriteE, buf3.MemtoRegE, buf4.MemtoRegM, buf4.WriteRegM, PCSrcD, buf5.WriteRegM2, buf6.WriteRegM3, buf4.RegWriteM, buf5.RegWriteM2, buf6.RegWriteM3, buf3.RegDstE, buf3.RdE, buf7.WriteRegW, buf7.RegWriteW);
 	h.updateData();
@@ -73,13 +74,13 @@ void dp(int &clk, unsigned int &pcin,
 	PC(pcin, pcout, !h.StallF);
 	im.IF1();
 	buf1.inputData(pcout);
-	cout << "IF stage: " << endl;
-	cout << "PCSrcD: " << PCSrcD << endl;
-	cout << "PC: " << pcout << endl;
-	cout << "PCBRANCHD !!!!!!!!  " << dec << PCBranchD << endl;
-	cout << "StallF: " << h.StallF << endl;
+	target << "IF stage: " << endl;
+	target << "PCSrcD: " << PCSrcD << endl;
+	target << "PC: " << pcout << endl;
+	target << "PCBRANCHD !!!!!!!!  " << dec << PCBranchD << endl;
+	target << "StallF: " << h.StallF << endl;
 	buf1.setInstNum(clk, pcout);
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "--------------------------------------------------" << endl << endl;
 	Code c;
 	if (clk > 0) {
 		if (inst != 0xffffffff && pcout / 4 < a.inst.size() - 1 && a.inst[pcout / 4] != 0xcccccccc) {
@@ -102,24 +103,24 @@ void dp(int &clk, unsigned int &pcin,
 	ResultW = (buf7.MemtoRegW == 1) ? buf7.ReadDataW : buf7.ALUOutW;
 	if (buf7.RegWriteW == 1)
 		rf.writeRegFile(buf7.WriteRegW, ResultW);
-	cout << "WB stage: " << endl;
-	cout << "MemtoRegW: " << buf7.MemtoRegW << endl;
-	cout << "ALUOutW: " << buf7.ALUOutW << endl;
-	cout << "ReadDataW: " << buf7.ReadDataW << endl;
-	cout << "RegWriteW: " << buf7.RegWriteW << endl;
-	cout << "WriteRegW: " << buf7.WriteRegW << endl;
-	cout << "ResultW: " << ResultW << endl;
-	cout << "====================================================================" << endl << endl;
+	target << "WB stage: " << endl;
+	target << "MemtoRegW: " << buf7.MemtoRegW << endl;
+	target << "ALUOutW: " << buf7.ALUOutW << endl;
+	target << "ReadDataW: " << buf7.ReadDataW << endl;
+	target << "RegWriteW: " << buf7.RegWriteW << endl;
+	target << "WriteRegW: " << buf7.WriteRegW << endl;
+	target << "ResultW: " << ResultW << endl;
+	target << "====================================================================" << endl << endl;
 
 	if (!h.StallD)
 		buf2.inputData(inst, pcout + 4);
 	if ((PCSrcD >> 1) | ((PCSrcD >> 1) & 1))
 		buf2.clr();
-	cout << "IS stage: " << endl;
-	cout << "Instruction: " << hex << inst << endl;
-	cout << "StallD: " << h.StallD << endl;
-	cout << "PCSrc: " << dec << PCSrcD << endl;
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "IS stage: " << endl;
+	target << "Instruction: " << hex << inst << endl;
+	target << "StallD: " << h.StallD << endl;
+	target << "PCSrc: " << dec << PCSrcD << endl;
+	target << "--------------------------------------------------" << endl << endl;
 	if (clk > 1)
 		buf2.setInstNum(buf1.inst_num - 1, buf1.pc);
 
@@ -150,45 +151,38 @@ void dp(int &clk, unsigned int &pcin,
 		SrcBE = (buf3.ALUSrcE == 0) ? WriteDataE : buf3.SignImmE;
 		ALU(SrcAE, SrcBE, buf3.ALUControlE, aluoutE, z);
 		WriteRegE = (buf3.RegDstE == 0) ? buf3.RtE : buf3.RdE;
-		if (h.FlushE) {
-			buf3.updateData();
-			buf3.flushE();
-		}
 		buf4.inputData(buf3.RegWriteE, buf3.MemtoRegE, buf3.MemWriteE, aluoutE, WriteDataE, WriteRegE);
-		cout << "EX stage: " << endl;
-		cout << "RegDstE: " << buf3.RegDstE << endl;
-		cout << "ALUSrcE: " << buf3.ALUSrcE << endl;
-		cout << "ALUControlE: " << buf3.ALUControlE << endl;
-		cout << "SrcAE: " << SrcAE << endl;
-		cout << "SrcBE: " << SrcBE << endl;
-		cout << "ALUResult: " << aluoutE << endl;
-		cout << "RegWriteE: " << buf3.RegWriteE << endl;
-		cout << "MemtoRegE: " << buf3.MemtoRegE << endl;
-		cout << "MemWriteE: " << buf3.MemWriteE << endl;
-		cout << "WriteDataE: " << WriteDataE << endl;
-		cout << "WriteRegE: " << WriteRegE << endl;
-		cout << "buf3.RsE: " << buf3.RsE << endl;
-		cout << "Buf4.WriteregM: " << buf4.WriteRegM << endl;
-		cout << "Buf5.WriteRegM2: " << buf5.WriteRegM2 << endl;
-		cout << "Buf6.WriteRegM3: " << buf6.WriteRegM3 << endl;
-		cout << "Buf7.WriteRegW: " << buf7.WriteRegW << endl;
-		cout << "FA: " << h.ForwardAE << endl;
-		cout << "FB: " << h.ForwardBE << endl;
+		target << "EX stage: " << endl;
+		target << "RegDstE: " << buf3.RegDstE << endl;
+		target << "ALUSrcE: " << buf3.ALUSrcE << endl;
+		target << "ALUControlE: " << buf3.ALUControlE << endl;
+		target << "SrcAE: " << SrcAE << endl;
+		target << "SrcBE: " << SrcBE << endl;
+		target << "ALUResult: " << aluoutE << endl;
+		target << "RegWriteE: " << buf3.RegWriteE << endl;
+		target << "MemtoRegE: " << buf3.MemtoRegE << endl;
+		target << "MemWriteE: " << buf3.MemWriteE << endl;
+		target << "WriteDataE: " << WriteDataE << endl;
+		target << "WriteRegE: " << WriteRegE << endl;
+		target << "buf3.RsE: " << buf3.RsE << endl;
+		target << "Buf4.WriteregM: " << buf4.WriteRegM << endl;
+		target << "Buf5.WriteRegM2: " << buf5.WriteRegM2 << endl;
+		target << "Buf6.WriteRegM3: " << buf6.WriteRegM3 << endl;
+		target << "Buf7.WriteRegW: " << buf7.WriteRegW << endl;
+		target << "FA: " << h.ForwardAE << endl;
+		target << "FB: " << h.ForwardBE << endl;
 		if (clk > 3)
 			buf4.setInstNum(buf3.inst_num, buf3.pc);
 
 		buf5.inputData(buf4.RegWriteM, buf4.MemtoRegM, buf4.MemWriteM, buf4.ALUOutM, buf4.WriteDataM, buf4.WriteRegM);
-		buf4.updateData();
-		//buf5.updateData();
 
-		cout << "--------------------------------------------------" << endl << endl;
+		target << "--------------------------------------------------" << endl << endl;
 	}
 
 	rf.readRegFile(cu.A1, cu.A2, rd1, rd2);
 	buf3.inputData(cu.RegWrite, cu.MemtoReg, cu.MemWrite, cu.aluctrl, cu.alusrc, cu.RegDst, rd1, rd2, cu.RsD, cu.RtD, cu.RdE, cu.Iimm);
 	//FlushE = lwstall || branchstall || cu.jump;
 
-	buf5.updateData();
 
 	switch (h.ForwardBD)
 	{
@@ -212,39 +206,39 @@ void dp(int &clk, unsigned int &pcin,
 	//c2 = (ForwardBD == 0) ? rd2 : buf4.ALUOutM;
 	comp = (c1 <= c2) ? 1 : 0;
 	PCSrcD = (cu.jump << 1 | cu.branch);
-	cout << "PCBRANCH BEFORE " << dec << cu.Iimm << endl;
+	target << "PCBRANCH BEFORE " << dec << cu.Iimm << endl;
 	PCBranchD = cu.Iimm * 4;
 	PCJump = ((pcout >> 28) << 28) | (cu.Jimm << 2);
 	//we need to check for data dependency here
-	cout << "RF stage: " << endl;
-	cout << "ForwardAD " << h.ForwardAD << endl;
-	cout << "ForwardBD " << h.ForwardBD << endl;
+	target << "RF stage: " << endl;
+	target << "ForwardAD " << h.ForwardAD << endl;
+	target << "ForwardBD " << h.ForwardBD << endl;
 
-	cout << "FlushE: " << h.FlushE << endl;
-	cout << "InstructionD: " << hex << buf2.instD << endl;
-	cout << "c1: " << c1 << endl;
-	cout << "c2: " << c2 << endl;
-	cout << "A1: " << cu.A1 << endl;
-	cout << "A2: " << cu.A2 << endl;
-	cout << "RD1: " << rd1 << endl;
-	cout << "RD2: " << rd2 << endl;
-	cout << "RegWriteD: " << cu.RegWrite << endl;
-	cout << "MemtoRegD: " << cu.MemtoReg << endl;
-	cout << "MemWriteD: " << cu.MemWrite << endl;
-	cout << "ALUControlD: " << cu.aluctrl << endl;
-	cout << "ALUSrc: " << cu.alusrc << endl;
-	cout << "RegDstD: " << cu.RegDst << endl;
-	cout << "JumpD: " << cu.jump << endl;
-	cout << "BranchD: " << cu.branch << endl;
-	cout << "RsD: " << cu.RsD << endl;
-	cout << "RtD: " << cu.RtD << endl;
-	cout << "RdE: " << cu.RdE << endl;
-	cout << "I-imm: " << cu.Iimm << endl;
-	cout << "J-imm: " << cu.Jimm << endl;
+	target << "FlushE: " << h.FlushE << endl;
+	target << "InstructionD: " << hex << buf2.instD << endl;
+	target << "c1: " << c1 << endl;
+	target << "c2: " << c2 << endl;
+	target << "A1: " << cu.A1 << endl;
+	target << "A2: " << cu.A2 << endl;
+	target << "RD1: " << rd1 << endl;
+	target << "RD2: " << rd2 << endl;
+	target << "RegWriteD: " << cu.RegWrite << endl;
+	target << "MemtoRegD: " << cu.MemtoReg << endl;
+	target << "MemWriteD: " << cu.MemWrite << endl;
+	target << "ALUControlD: " << cu.aluctrl << endl;
+	target << "ALUSrc: " << cu.alusrc << endl;
+	target << "RegDstD: " << cu.RegDst << endl;
+	target << "JumpD: " << cu.jump << endl;
+	target << "BranchD: " << cu.branch << endl;
+	target << "RsD: " << cu.RsD << endl;
+	target << "RtD: " << cu.RtD << endl;
+	target << "RdE: " << cu.RdE << endl;
+	target << "I-imm: " << cu.Iimm << endl;
+	target << "J-imm: " << cu.Jimm << endl;
 
 	if (clk > 2)
 		buf3.setInstNum(buf2.inst_num - 1, buf2.pc);
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "--------------------------------------------------" << endl << endl;
 
 	//EX
 	if (!flag)
@@ -274,31 +268,30 @@ void dp(int &clk, unsigned int &pcin,
 		ALU(SrcAE, SrcBE, buf3.ALUControlE, aluoutE, z);
 		WriteRegE = (buf3.RegDstE == 0) ? buf3.RtE : buf3.RdE;
 		buf4.inputData(buf3.RegWriteE, buf3.MemtoRegE, buf3.MemWriteE, aluoutE, WriteDataE, WriteRegE);
-		cout << "EX stage: " << endl;
-		cout << "RegDstE: " << buf3.RegDstE << endl;
-		cout << "ALUSrcE: " << buf3.ALUSrcE << endl;
-		cout << "ALUControlE: " << buf3.ALUControlE << endl;
-		cout << "SrcAE: " << SrcAE << endl;
-		cout << "SrcBE: " << SrcBE << endl;
-		cout << "ALUResult: " << aluoutE << endl;
-		cout << "RegWriteE: " << buf3.RegWriteE << endl;
-		cout << "MemtoRegE: " << buf3.MemtoRegE << endl;
-		cout << "MemWriteE: " << buf3.MemWriteE << endl;
-		cout << "WriteDataE: " << WriteDataE << endl;
-		cout << "WriteRegE: " << WriteRegE << endl;
-		cout << "buf3.RsE: " << buf3.RsE << endl;
-		cout << "Buf4.WriteregM: " << buf4.WriteRegM << endl;
-		cout << "Buf5.WriteRegM2: " << buf5.WriteRegM2 << endl;
-		cout << "Buf6.WriteRegM3: " << buf6.WriteRegM3 << endl;
-		cout << "Buf7.WriteRegW: " << buf7.WriteRegW << endl;
-		cout << "FA: " << h.ForwardAE << endl;
-		cout << "FB: " << h.ForwardBE << endl;
+		target << "EX stage: " << endl;
+		target << "RegDstE: " << buf3.RegDstE << endl;
+		target << "ALUSrcE: " << buf3.ALUSrcE << endl;
+		target << "ALUControlE: " << buf3.ALUControlE << endl;
+		target << "SrcAE: " << SrcAE << endl;
+		target << "SrcBE: " << SrcBE << endl;
+		target << "ALUResult: " << aluoutE << endl;
+		target << "RegWriteE: " << buf3.RegWriteE << endl;
+		target << "MemtoRegE: " << buf3.MemtoRegE << endl;
+		target << "MemWriteE: " << buf3.MemWriteE << endl;
+		target << "WriteDataE: " << WriteDataE << endl;
+		target << "WriteRegE: " << WriteRegE << endl;
+		target << "buf3.RsE: " << buf3.RsE << endl;
+		target << "Buf4.WriteregM: " << buf4.WriteRegM << endl;
+		target << "Buf5.WriteRegM2: " << buf5.WriteRegM2 << endl;
+		target << "Buf6.WriteRegM3: " << buf6.WriteRegM3 << endl;
+		target << "Buf7.WriteRegW: " << buf7.WriteRegW << endl;
+		target << "FA: " << h.ForwardAE << endl;
+		target << "FB: " << h.ForwardBE << endl;
 		if (clk > 3)
 			buf4.setInstNum(buf3.inst_num, buf3.pc);
 		buf5.inputData(buf4.RegWriteM, buf4.MemtoRegM, buf4.MemWriteM, buf4.ALUOutM, buf4.WriteDataM, buf4.WriteRegM);
-		buf4.updateData();
 
-		cout << "--------------------------------------------------" << endl << endl;
+		target << "--------------------------------------------------" << endl << endl;
 	}
 
 
@@ -307,43 +300,43 @@ void dp(int &clk, unsigned int &pcin,
 	dm.DF1();
 
 
-	cout << "DF stage: " << endl;
-	cout << "RegWriteM: " << buf4.RegWriteM << endl;
-	cout << "MemtoRegM: " << buf4.MemtoRegM << endl;
-	cout << "MemWriteM: " << buf4.MemWriteM << endl;
-	cout << "ALUOutM: " << buf4.ALUOutM << endl;
-	cout << "WriteDataM: " << buf4.WriteDataM << endl;
-	cout << "WriteRegM: " << buf4.WriteRegM << endl;
+	target << "DF stage: " << endl;
+	target << "RegWriteM: " << buf4.RegWriteM << endl;
+	target << "MemtoRegM: " << buf4.MemtoRegM << endl;
+	target << "MemWriteM: " << buf4.MemWriteM << endl;
+	target << "ALUOutM: " << buf4.ALUOutM << endl;
+	target << "WriteDataM: " << buf4.WriteDataM << endl;
+	target << "WriteRegM: " << buf4.WriteRegM << endl;
 	if (clk > 4)
 		buf5.setInstNum(buf4.inst_num - 1, buf4.pc);
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "--------------------------------------------------" << endl << endl;
 
 	//DS
 	dm.DF2(buf5.ALUOutM2, buf5.MemWriteM2, buf5.WriteDataM2, ReadDataM2);
 	buf6.inputData(buf5.RegWriteM2, ReadDataM2, buf5.MemtoRegM2, buf5.ALUOutM2, buf5.WriteRegM2);
-	cout << "DS stage: " << endl;
-	cout << "RegWriteM2: " << buf5.RegWriteM2 << endl;
-	cout << "MemtoRegM2: " << buf5.MemtoRegM2 << endl;
-	cout << "MemWriteM2: " << buf5.MemWriteM2 << endl;
-	cout << "ALUOutM2: " << buf5.ALUOutM2 << endl;
-	cout << "WriteDataM2: " << buf5.WriteDataM2 << endl;
-	cout << "WriteRegM2: " << buf5.WriteRegM2 << endl;
-	cout << "ReadDataM2: " << ReadDataM2 << endl;
+	target << "DS stage: " << endl;
+	target << "RegWriteM2: " << buf5.RegWriteM2 << endl;
+	target << "MemtoRegM2: " << buf5.MemtoRegM2 << endl;
+	target << "MemWriteM2: " << buf5.MemWriteM2 << endl;
+	target << "ALUOutM2: " << buf5.ALUOutM2 << endl;
+	target << "WriteDataM2: " << buf5.WriteDataM2 << endl;
+	target << "WriteRegM2: " << buf5.WriteRegM2 << endl;
+	target << "ReadDataM2: " << ReadDataM2 << endl;
 	if (clk > 5)
 		buf6.setInstNum(buf5.inst_num - 1, buf5.pc);
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "--------------------------------------------------" << endl << endl;
 	//TC
 	dm.TC();
 	buf7.inputData(buf6.RegWriteM3, buf6.ReadDataM3, buf6.MemtoRegM3, buf6.ALUOutM3, buf6.WriteRegM3);
-	cout << "TC stage: " << endl;
-	cout << "RegWriteM3: " << buf6.RegWriteM3 << endl;
-	cout << "MemtoRegM3: " << buf6.MemtoRegM3 << endl;
-	cout << "ALUOutM3: " << buf6.ALUOutM2 << endl;
-	cout << "WriteRegM3: " << buf6.WriteRegM3 << endl;
-	cout << "ReadDataM3: " << buf6.ReadDataM3 << endl;
+	target << "TC stage: " << endl;
+	target << "RegWriteM3: " << buf6.RegWriteM3 << endl;
+	target << "MemtoRegM3: " << buf6.MemtoRegM3 << endl;
+	target << "ALUOutM3: " << buf6.ALUOutM2 << endl;
+	target << "WriteRegM3: " << buf6.WriteRegM3 << endl;
+	target << "ReadDataM3: " << buf6.ReadDataM3 << endl;
 	if (clk > 6)
 		buf7.setInstNum(buf6.inst_num - 1, buf6.pc);
-	cout << "--------------------------------------------------" << endl << endl;
+	target << "--------------------------------------------------" << endl << endl;
 
 
 
@@ -362,12 +355,13 @@ void dp(int &clk, unsigned int &pcin,
 
 int main() {
 	assembly file;
+	target.open("log.txt");
 	if (file.readFile("asm.txt")) {
-		cout << "processing... " << endl;
+		target << "processing... " << endl;
 		datapath(file);
 	}
 	else
-		cout << "error file" << endl;
+		target << "error file" << endl;
 
 	system("Pause");
 	return 0;
@@ -383,6 +377,9 @@ void ALU(int a, int b, int ALU_CT, int &result, int &z) {
 		break;
 	case 2:
 		result = a + b;
+		break;
+	case 3:
+		result = (a<b)?1:0;
 		break;
 	case 4:
 		result = a ^ b;
@@ -425,7 +422,7 @@ void datapath(assembly f)
 	for (int i = 0; i < f.inst.size(); i++)
 	{
 		im.WriteInst(i * 4, f.inst[i]);
-		cout << f.inst[i] << endl;
+		target << f.inst[i] << endl;
 	}
 
 	//RegFile
@@ -452,7 +449,7 @@ void datapath(assembly f)
 	//GUI G;
 	vector <Code> code;
 	//keep loop going until limit for next is reached and window is still open
-	while (clk<19)
+	while (clk<25)
 	{
 
 		//G.handleEvents();
@@ -481,7 +478,7 @@ void datapath(assembly f)
 		}
 		for (int i = 0; i < 16; i++)
 		{
-			cout << i << "\t" << rf.file[i] << endl;
+			target << i << "\t" << rf.file[i] << endl;
 		}
 
 

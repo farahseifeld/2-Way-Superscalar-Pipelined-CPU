@@ -1,4 +1,5 @@
-#pragma once
+#include<iostream>
+using namespace std;
 class instCU
 {
 public:
@@ -29,9 +30,15 @@ instCU::instCU(int x)
 void instCU::instdec(unsigned int inst)
 {
 	op = inst >> 26;
-	
+
 	funct = inst & 0x3f;
 	Iimm = inst & 0xffff;
+	cout << "IMM YA3: " << Iimm << endl;
+	if ((Iimm & 0x8000) == 0x8000) {
+		Iimm = Iimm | 0xffff0000;
+		cout << "IMM YA32423432423: " << Iimm << endl;
+	}
+	
 	Jimm = (inst << 6) >> 5;
 	A1 = (inst << 6) >> 27;
 	RsD = A1;
@@ -103,7 +110,7 @@ void instCU::control()
 		RegWrite = 1;
 		MemtoReg = 0;
 		MemWrite = 0;
-		aluctrl = 7;
+		aluctrl = 3;
 		alusrc = 0;
 		RegDst = 1;
 		jump = 0;
@@ -165,7 +172,7 @@ void instCU::setinst(int x)
 void instCU::printCU() {
 	//int Iimm, Jimm, A1, A2, RsD, RtD, RdE;
 	//int op, funct, jump, branch, MemtoReg, MemWrite, RegWrite, aluctrl, alusrc, RegDst;
-	cout << "Iimm: " << Iimm <<endl;
+/*	cout << "Iimm: " << Iimm << endl;
 	cout << "Jimm: " << Jimm << endl;
 	cout << "A1: " << A1 << endl;
 	cout << "A2: " << A2 << endl;
@@ -173,5 +180,5 @@ void instCU::printCU() {
 	cout << "RtD: " << RtD << endl;
 	cout << "RdE: " << RdE << endl;
 	cout << "Op: " << op << endl;
-	cout << "jump: " << jump << endl;
+	cout << "jump: " << jump << endl*/;
 }

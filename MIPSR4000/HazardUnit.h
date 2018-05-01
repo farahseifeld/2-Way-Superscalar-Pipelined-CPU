@@ -1,3 +1,4 @@
+#pragma once
 #ifndef HAZARDUNIT_H
 #define HAZARDUNIT_H
 class HazardUnit
@@ -7,11 +8,11 @@ public:
 	~HazardUnit();
 	int StallF = 0, StallD = 0, ForwardAD = 0, ForwardBD = 0, FlushE = 0, ForwardAE = 0,
 		ForwardBE = 0, branchstall = 0, lwstall = 0;
-	unsigned int RsD,RsE, RtD, RtE, 
+	unsigned int RsD, RsE, RtD, RtE,
 		MemtoRegE, branch, RegWriteE, MemWriteE, MemtoRegM,
 		WriteRegM, WriteRegE, PCSrcD,
 		WriteRegM2, WriteRegM3, RegWriteM, RegWriteM2, RegWriteM3, RegDstE, RdE,
-		WriteRegW,RegWriteW;
+		WriteRegW, RegWriteW;
 	void updateData();
 	void inputData(unsigned int RsD_in, unsigned int RsE_in, unsigned int RtD_in, unsigned int RtE_in, unsigned int MemtoRegE_in, unsigned int branch_in,
 		unsigned int RegWriteE_in, unsigned int MemWriteE_in, unsigned int MemtoRegM_in, unsigned int WriteRegM_in,
@@ -125,7 +126,7 @@ void HazardUnit::updateData()
 	if ((RtD != 0 && RtD == WriteRegM) && RegWriteM)
 		ForwardBD = 2;
 
-	else if ((RtD != 0 && RtD == WriteRegM) && RegWriteM)
+	else if ((RtD != 0 && RtD == WriteRegM2) && RegWriteM2)
 		ForwardBD = 3;
 	else if ((RtD != 0 && (RtD == WriteRegW)) && RegWriteW)
 		ForwardBD = 1;

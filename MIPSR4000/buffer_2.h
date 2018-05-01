@@ -6,13 +6,19 @@ public:
 	buffer_2();
 	~buffer_2();
 	void inputData(unsigned int, unsigned int);
-	void updateData(unsigned int stallD);
-	void CLR();
+	void updateData();
+	void clr();
 	unsigned int inst, instD, PCPlus4, PCPlus4D;
 	int inst_num = 0;
-	void setInstNum(int num)
+	unsigned int pc;
+	void setInstNum(int num, unsigned int p)
 	{
 		inst_num = num;
+		pc = p;
+	}
+	void flushE() {
+		instD = 0;
+		PCPlus4D = 0;
 	}
 private:
 
@@ -20,7 +26,9 @@ private:
 
 buffer_2::buffer_2()
 {
+	inst = 0;
 	instD = 0;
+	PCPlus4 = 0;
 	PCPlus4D = 0;
 }
 
@@ -32,17 +40,14 @@ void buffer_2::inputData(unsigned int instruction, unsigned int PC)
 	inst = instruction;
 	PCPlus4 = PC;
 }
-void buffer_2::updateData(unsigned int stallD)
+void buffer_2::updateData()
 {
-	if (stallD == 0)
-	{
-		instD = inst;
-		PCPlus4D = PCPlus4;
-	}
+	instD = inst;
+	PCPlus4D = PCPlus4;
 }
-void buffer_2::CLR()
+void buffer_2::clr()
 {
-	instD = 0;
+	PCPlus4 = 0;
 	PCPlus4D = 0;
 }
 #endif

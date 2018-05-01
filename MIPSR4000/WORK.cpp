@@ -328,11 +328,15 @@ void dp(int &clk, unsigned int &pcin,
 	//Buffers update
 	buf1.updateData();
 	buf2.updateData();
+	if (h.FlushE)
+		buf2.flushE();
 	buf3.updateData();
 	if (h.FlushE)
 		buf3.flushE();
-	//buf4.updateData();
+	
 	buf4.updateData();
+	if (h.FlushE)
+		buf4.flushE();
 	buf5.updateData();
 	buf6.updateData();
 	buf7.updateData();

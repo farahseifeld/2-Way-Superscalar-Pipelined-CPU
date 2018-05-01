@@ -1,4 +1,3 @@
-#pragma once
 #ifndef BUFFER_3_H
 #define BUFFER_3_H
 class buffer_3
@@ -6,6 +5,7 @@ class buffer_3
 public:
 	buffer_3();
 	~buffer_3();
+	bool flushed;
 	unsigned int RegWriteD, MemtoRegD, MemWriteD, ALUControlD, ALUSrcD, RegDstD;
 	unsigned int RegWriteE, MemtoRegE, MemWriteE, ALUControlE, ALUSrcE, RegDstE;
 	unsigned int RD1D, RD2D, RsD, RtD, RdD, SignImmD;
@@ -15,12 +15,14 @@ public:
 		, unsigned int RD1D, unsigned int RD2D, unsigned int RsD, unsigned int RtD
 		, unsigned int RdD, unsigned int SignImmD);
 	void updateData();
-	void flushE();
 	int inst_num = 0;
-	void setInstNum(int num)
+	unsigned int pc;
+	void setInstNum(int num, unsigned int p)
 	{
 		inst_num = num;
+		pc = p;
 	}
+	void flushE();
 private:
 
 };
@@ -28,6 +30,7 @@ private:
 buffer_3::buffer_3()
 {
 	flushE();
+	flushed = false;
 }
 
 buffer_3::~buffer_3()
@@ -38,6 +41,7 @@ void buffer_3::inputData(unsigned int RegWriteD_in, unsigned int MemtoRegD_in, u
 	, unsigned int RD1D_in, unsigned int RD2D_in, unsigned int RsD_in, unsigned int RtD_in
 	, unsigned int RdD_in, unsigned int SignImmD_in)
 {
+	flushed = false;
 	RegWriteD = RegWriteD_in;
 	MemtoRegD = MemtoRegD_in;
 	MemWriteD = MemWriteD_in;
@@ -80,5 +84,6 @@ void buffer_3::flushE()
 	RtE = 0;
 	RdE = 0;
 	SignImmE = 0;
+	flushed = true;
 }
 #endif

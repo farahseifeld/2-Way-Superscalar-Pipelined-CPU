@@ -6,7 +6,7 @@ public:
 	instCU(int x);
 	int inst;
 	int Iimm, Jimm, A1, A2, RsD, RtD, RdE;
-	int op, funct, jump, branch, MemtoReg, MemWrite, RegWrite, aluctrl, alusrc, RegDst;
+	int op, funct, jump, jumpr,branch, MemtoReg, MemWrite, RegWrite, aluctrl, alusrc, RegDst;
 	void setinst(int x);
 	void printCU();
 private:
@@ -49,6 +49,7 @@ void instCU::instdec(unsigned int inst)
 }
 void instCU::control()
 {
+	jumpr = 0;
 	if (op == 0 && funct == 0x20)//add
 	{
 		RegWrite = 1;
@@ -146,6 +147,7 @@ void instCU::control()
 		alusrc = 0;
 		RegDst = 1;
 		jump = 0;
+		jumpr = 1;
 		branch = 0;
 	}
 	else {
